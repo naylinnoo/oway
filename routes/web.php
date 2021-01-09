@@ -26,3 +26,5 @@ Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'view'])
 Route::get('/profile/edit', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
 Route::post('/profile/update', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 Route::post('/profile/update/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.updatePassword')->middleware('auth');
+Route::post('/profile/update/photo', [\App\Http\Controllers\ProfileController::class, 'updatePhoto'])->name('profile.updatePhoto')->middleware('auth');
+

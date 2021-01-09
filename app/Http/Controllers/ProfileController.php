@@ -6,7 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class ProfileController extends Controller
 {
@@ -47,18 +49,44 @@ class ProfileController extends Controller
             ])->validate();
 
             $user = Auth::user();
-            $user->password =  Hash::make($request->password);
+            $user->password = Hash::make($request->password);
             $user->save();
 
             return redirect()->route('profile.view')->with(['message' => 'Password updated']);
 
-        }else{
+        } else {
             return redirect()->back()->withErrors(['message' => "Your old password is incorrect"]);
         }
     }
 
-    public function users(){
-        $user = User::select('name','email')->get();
+    public function updatePhoto(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:png|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json("Photo doesn't meet requirement");
+        }
+
+        $photo = Image::make($request->file('image'))->resize(400, 400)->encode('png');
+        $hash = md5($photo->__toString());
+        $path = "photos/{$hash}.jpg";
+        $photo = Storage::disk('public')->put($path, $photo->__toString());
+
+        $user = Auth::user();
+        if($user->profile_image){
+            Storage::disk('public')->delete($user->profile_image);
+        }
+        $user->profile_image = $path;
+        $user->save();
+
+        return response()->json($user->profile_image);
+    }
+
+    public function users()
+    {
+        $user = User::select('name', 'email')->get();
         return $user->toJson(JSON_PRETTY_PRINT);
     }
 }

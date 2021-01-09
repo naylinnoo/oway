@@ -12,14 +12,10 @@
                 <div class="card">
                     <div class="card-header">Profile</div>
                         <div class=" p-5">
-                            <div class="d-flex justify-content-center mb-3">
-                                <img src="https://i.pinimg.com/originals/f5/1d/08/f51d08be05919290355ac004cdd5c2d6.png"
-                                     class="img-thumbnail rounded mx-auto d-block"
-                                     width="100" height="100"
-                                     alt="...">
-                            </div>
-                            <div class="d-flex justify-content-center mb-5">
-                                <button class="btn btn-primary">Update Image</button>
+                            <div id="app">
+                                <div class="">
+                                    <photo src="{{$user->profile_image}}" id="{{$user->id}}"></photo>
+                                </div>
                             </div>
 
 
