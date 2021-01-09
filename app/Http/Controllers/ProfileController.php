@@ -62,7 +62,7 @@ class ProfileController extends Controller
     public function updatePhoto(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:png|max:500',
+            'image' => 'required|image|mimes:png|max:500|dimensions:ratio=1/1',
         ]);
 
         if ($validator->fails()) {
