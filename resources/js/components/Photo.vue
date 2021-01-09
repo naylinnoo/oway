@@ -4,7 +4,7 @@
             <img :src="'/storage/'+this.path"
                  class="img-thumbnail rounded mx-auto d-block"
                  width="100" height="100"
-                 alt="...">
+                 >
             <input type="file" id="file" ref="file" @change="updatePhoto($event)" style="display: none"/>
         </div>
         <div class="d-flex justify-content-center mb-5">

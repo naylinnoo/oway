@@ -37380,12 +37380,7 @@ var render = function() {
     _c("div", { staticClass: "d-flex justify-content-center mb-3" }, [
       _c("img", {
         staticClass: "img-thumbnail rounded mx-auto d-block",
-        attrs: {
-          src: "/storage/" + this.path,
-          width: "100",
-          height: "100",
-          alt: "..."
-        }
+        attrs: { src: "/storage/" + this.path, width: "100", height: "100" }
       }),
       _vm._v(" "),
       _c("input", {
