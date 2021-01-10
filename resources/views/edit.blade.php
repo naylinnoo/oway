@@ -46,12 +46,6 @@
                                 <input type="password" name="old_password" class="form-control" id="old-password"
                                        required>
                             </div>
-                            @error('old_password')
-                            <br>
-                            <span class="" role="alert">
-                                        <p class="text-danger">{{ $message }}</p>
-                                    </span>
-                            @enderror
                             <div class="form-group">
                                 <label for="new-password">New Password</label>
                                 <input type="password" name="password" class="form-control" id="new-password"
@@ -63,12 +57,6 @@
                                 <input type="password" name="password_confirmation" class="form-control"
                                        id="confirm-password" required>
                             </div>
-                            @error('password')
-                            <br>
-                            <span class="" role="alert">
-                                        <p class="text-danger">{{ $message }}</p>
-                                    </span>
-                            @enderror
 
                             <br><br>
                             <button type="submit" class="btn btn-primary btn-block">Change Password</button>

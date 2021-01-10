@@ -1861,6 +1861,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -1869,7 +1873,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       path: this.src,
-      file: null
+      file: null,
+      message: null
     };
   },
   methods: {
@@ -1878,14 +1883,15 @@ __webpack_require__.r(__webpack_exports__);
 
       this.file = event.target.files[0];
       var formData = new FormData();
-      formData.append('image', this.file, this.file.name);
-      axios.post('/profile/update/photo', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      formData.append('image', this.file);
+      axios.post('/profile/update/photo', formData).then(function (response) {
+        if (response.data.status === 'success') {
+          _this.path = response.data.photo;
+          _this.message = "Photo successfully uploaded";
+        } else {
+          _this.message = response.data.status.image[0];
         }
-      }).then(function (response) {
-        _this.path = response.data;
-      });
+      })["catch"](function (error) {});
     }
   }
 });
@@ -37377,10 +37383,22 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    this.message
+      ? _c(
+          "div",
+          { staticClass: "alert alert-primary", attrs: { role: "alert" } },
+          [_vm._v("\n       " + _vm._s(this.message) + "\n    ")]
+        )
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "d-flex justify-content-center mb-3" }, [
       _c("img", {
         staticClass: "img-thumbnail rounded mx-auto d-block",
-        attrs: { src: "/storage/" + this.path, width: "100", height: "100" }
+        attrs: {
+          src: this.path ? "/storage/" + this.path : "#",
+          width: "100",
+          height: "100"
+        }
       }),
       _vm._v(" "),
       _c("input", {

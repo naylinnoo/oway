@@ -66,22 +66,23 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json("Photo doesn't meet requirement");
+            return response()->json(['status' => $validator->getMessageBag()]);
+        } else {
+            $photo = Image::make($request->file('image'))->resize(400, 400)->encode('png');
+            $hash = md5($photo->__toString());
+            $path = "photos/{$hash}.jpg";
+            $photo = Storage::disk('public')->put($path, $photo->__toString());
+
+            $user = Auth::user();
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            $user->profile_image = $path;
+            $user->save();
+
+            return response()->json(['status' => 'success',  'photo' => $user->profile_image]);
         }
 
-        $photo = Image::make($request->file('image'))->resize(400, 400)->encode('png');
-        $hash = md5($photo->__toString());
-        $path = "photos/{$hash}.jpg";
-        $photo = Storage::disk('public')->put($path, $photo->__toString());
-
-        $user = Auth::user();
-        if($user->profile_image){
-            Storage::disk('public')->delete($user->profile_image);
-        }
-        $user->profile_image = $path;
-        $user->save();
-
-        return response()->json($user->profile_image);
     }
 
     public function users()
